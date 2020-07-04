@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Ryadel.Components.Web
 {
@@ -34,6 +35,14 @@ namespace Ryadel.Components.Web
 			((HttpWebRequest)w).ReadWriteTimeout = Timeout;
 			return w;
 		}
+		
+		public new async Task<string> DownloadStringTaskAsync(Uri address)
+		{
+			var t = base.DownloadStringTaskAsync(address);
+			if (await Task.WhenAny(t, Task.Delay(Timeout)) != t)
+				CancelAsync();
+			return await t;
+		}	
 		#endregion
 
 		/// <summary>
