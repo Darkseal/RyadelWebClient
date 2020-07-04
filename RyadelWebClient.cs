@@ -31,6 +31,7 @@ namespace Ryadel.Components.Web
 		{
 			WebRequest w = base.GetWebRequest(uri);
 			w.Timeout = Timeout;
+			((HttpWebRequest)w).ReadWriteTimeout = Timeout;
 			return w;
 		}
 		#endregion
